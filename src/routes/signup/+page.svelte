@@ -1,29 +1,20 @@
+<script lang="ts">
+	import SignupForm from './SignupForm.svelte';
+</script>
+
 <section class="hero is-fullheight is-default is-bold">
 	<div class="hero-head"></div>
 	<div class="hero-body">
-		<div class="container has-text-centered">
+		<div class="container">
 			<div class="columns is-vcentered">
 				<div class="column is-5">
-					<figure class="image">
-						<img class="object-fit" src="/home_page.jpg" alt="home" />
-					</figure>
+					<h1 class="title has-text-centered">Signup to PlaceMark</h1>
+					<SignupForm />
 				</div>
 				<div class="column is-6 is-offset-1">
-					<h1 class="title is-2 mb-5">
-						<span class="icon mr-5"><i class="fas fa-map-marker-alt"></i></span><span
-							class="icon mr-4"><i class="fas fa-vote-yea"></i></span
-						>
-						<p>PlaceMark</p>
-					</h1>
-					<h2 class="subtitle is-4 mt-2">Let's get new expirience!</h2>
-					<p class="has-text-centered">
-						<a class="button is-medium is-success" href="/signup">
-							<span class="icon"><i class="fas fa-plus"></i></span><span>Sign Up</span>
-						</a>
-						<a class="button is-medium is-link" href="/login">
-							<span class="icon"><i class="fas fa-sign-in"></i></span><span>Login</span>
-						</a>
-					</p>
+					<figure class="image is-4by3">
+						<img class="object-fit" src="/home_page.jpg" alt="home" />
+					</figure>
 				</div>
 			</div>
 		</div>

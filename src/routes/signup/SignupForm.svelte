@@ -3,6 +3,7 @@
 	import UserCredentials from '$lib/ui/UserCredentials.svelte';
 	import UserDetails from '$lib/ui/UserDetails.svelte';
 	import Message from '$lib/ui/Message.svelte';
+	import { resolve } from '$app/paths';
 
 	let firstName = $state('');
 	let lastName = $state('');
@@ -13,7 +14,7 @@
 	async function signup() {
 		const success = false;
 		if (success) {
-			goto('/donate');
+			goto('/PlaceMark');
 		} else {
 			message = 'Error Trying to sign up';
 		}
@@ -26,7 +27,8 @@
 	{/if}
 	<UserDetails bind:firstName bind:lastName />
 	<UserCredentials bind:email bind:password />
-	<button onclick={() => signup()} class="button">Sign Up</button>
+	<button onclick={signup} class="button">Sign Up</button>
+
 	<p class="has-text-centered">
 		Already have an account? <a href="/login" data-cy="login-redirect">Login Here</a>
 	</p>
