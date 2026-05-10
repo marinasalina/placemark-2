@@ -16,7 +16,7 @@
 			<div class="navbar-end">
 				<a class="navbar-item" href="/placemark"> PlaceMark </a>
 				<a class="navbar-item" href="/report"> Report </a>
-				//Display the user email directly from the rune
+				<!-- Display the user email directly from the rune-->
 				<a class="navbar-item" href="/logout"> Logout [{loggedInUser.email}]</a>
 			</div>
 			<div></div>

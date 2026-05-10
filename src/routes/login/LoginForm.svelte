@@ -1,18 +1,23 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { loggedInUser } from '$lib/runes.svelte';
 	import Message from '$lib/ui/Message.svelte';
 	import UserCredentials from '$lib/ui/UserCredentials.svelte';
+	import { resolve } from '$app/paths';
 
 	let email = $state('');
 	let password = $state('');
 	let message = $state('');
 
 	async function login() {
-		const success = false;
+		const success = true;
 		if (success) {
-			goto('/donate');
+			loggedInUser.email = email;
+			goto(resolve('/PlaceMark'));
 		} else {
-			message = 'Error Trying to login in';
+			email = '';
+			password = '';
+			message = 'Invalid Credentials';
 		}
 	}
 </script>

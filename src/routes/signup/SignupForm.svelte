@@ -14,7 +14,7 @@
 	async function signup() {
 		const success = false;
 		if (success) {
-			goto('/PlaceMark');
+			goto(resolve('/PlaceMark'));
 		} else {
 			message = 'Error Trying to sign up';
 		}
@@ -27,9 +27,8 @@
 	{/if}
 	<UserDetails bind:firstName bind:lastName />
 	<UserCredentials bind:email bind:password />
-	<button onclick={signup} class="button">Sign Up</button>
-
+	<button onclick={() => signup()} class="button">Sign Up</button>
 	<p class="has-text-centered">
-		Already have an account? <a href="/login" data-cy="login-redirect">Login Here</a>
+		Already have an account? <a href={resolve('/login')} data-cy="login-redirect">Login Here</a>
 	</p>
 </div>

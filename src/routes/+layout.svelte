@@ -1,10 +1,13 @@
+<script lang="ts">
+	import { loggedInUser } from '$lib/runes.svelte';
+	import Heading from '$lib/ui/Heading.svelte';
+	import Menu from '$lib/ui/Menu.svelte';
+</script>
+
 <div class="container">
-	<div class="tabs notification is-primary">
-		<ul>
-			<li><a href="/">Start</a></li>
-			<li><a href="/login">Login</a></li>
-			<li><a href="/signup">Signup</a></li>
-		</ul>
-	</div>
+	{#if loggedInUser.email}
+		<Menu />
+		<Heading />
+	{/if}
 	<slot />
 </div>
