@@ -1,6 +1,8 @@
 <script lang="ts">
 	import { subTitle } from '$lib/runes.svelte';
-	subTitle.text = 'PlaceMark';
+	import PlaceMarkForm from './PlaceMarkForm.svelte';
+
+	subTitle.text = "Let's start your adventure here!";
 </script>
 
-<p>Let's start your adventure here!</p>
+<PlaceMarkForm />
