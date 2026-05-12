@@ -1,9 +1,21 @@
 <script lang="ts">
-	import { subTitle } from '$lib/services/runes.svelte';
+	import { loggedInUser, subTitle } from '$lib/services/runes.svelte';
+	import { placemarkService } from '$lib/services/PlaceMark-service';
 	import Card from '$lib/ui/Card.svelte';
+	import { onMount } from 'svelte';
 	import PlaceMarkForm from './PlaceMarkForm.svelte';
+	import type { Placemark } from '$lib/types/placemark-types';
 
-	subTitle.text = "Let's start your adventure here!";
+	subTitle.text = 'Create a Placemark';
+
+	let placemarks: Placemark[] = [];
+
+	onMount(async () => {
+		// Load existing placemarks for this user (optional)
+		placemarks = await placemarkService.getPlacemarks();
+	});
 </script>
 
-<PlaceMarkForm />
+<Card title="Add a Placemark">
+	<PlaceMarkForm {placemarks} />
+</Card>
