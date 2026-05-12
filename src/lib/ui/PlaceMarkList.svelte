@@ -1,22 +1,24 @@
 <script lang="ts">
-	export let placemarks = [
-		{
-			name: 'Dublin',
-			description: 'Capital city',
-			category: 'City',
-			rating: 'recommend',
-			lat: 52.16129,
-			lng: -7.5154
-		},
-		{
-			name: 'Trinity College',
-			description: 'Library',
-			category: 'Library',
-			rating: 'recommend',
-			lat: 52.26129,
-			lng: -7.23154
-		}
-	];
+	let {
+		placemarks = [
+			{
+				name: 'Dublin',
+				description: 'Capital city',
+				category: 'City',
+				rating: 'recommend',
+				lat: 52.16129,
+				lng: -7.5154
+			},
+			{
+				name: 'Trinity College',
+				description: 'Library',
+				category: 'Library',
+				rating: 'recommend',
+				lat: 52.26129,
+				lng: -7.23154
+			}
+		]
+	} = $props();
 </script>
 
 <table class="table is-fullwidth">
