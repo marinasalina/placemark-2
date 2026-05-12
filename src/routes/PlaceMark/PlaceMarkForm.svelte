@@ -1,5 +1,5 @@
 <script lang="ts">
-	import PlaceMarkList from '$lib/ui/PlaceMarkist.svelte';
+	import Coordinates from '$lib/ui/Coordinates.svelte';
 
 	let PlaceMarkName = $state('');
 	let PlaceMarkDescription = $state('');
@@ -44,7 +44,7 @@
 		</select>
 	</div>
 
-	<div class="field">
-		<button class="button is-success is-fullwidth" onclick={addPlacemark}> Add Placemark </button>
-	</div>
+	<Coordinates bind:lat bind:lng />
+
+	<button class="button is-success is-fullwidth" onclick={addPlacemark}> Add Placemark </button>
 </div>
