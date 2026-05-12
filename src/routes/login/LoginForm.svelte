@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { loggedInUser } from '$lib/runes.svelte';
-	import { donationService } from '$lib/services/donation-service';
+	import { loggedInUser } from '$lib/services/runes.svelte';
+	import { PlaceMarkService } from '$lib/services/PlaceMark-service';
 	import Message from '$lib/ui/Message.svelte';
 	import UserCredentials from '$lib/ui/UserCredentials.svelte';
 
@@ -11,7 +11,7 @@
 
 	async function login() {
 		console.log(`attempting to log in email: ${email} with password: ${password}`);
-		let session = await donationService.login(email, password);
+		let session = await PlaceMarkService.login(email, password);
 		if (session) {
 			loggedInUser.email = email;
 			loggedInUser.name = session.name;

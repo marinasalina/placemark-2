@@ -5,7 +5,7 @@
 </script>
 
 <div class="container">
-	{#if loggedInUser.email}
+	{#if loggedInUser && loggedInUser.email}
 		<Menu />
 		<Heading />
 	{/if}
