@@ -1,6 +1,6 @@
 <script lang="ts">
 	//Import the run, this bring the global state object loggedInUser into component
-	import { loggedInUser } from '$lib/runes.svelte';
+	import { loggedInUser } from '$lib/services/runes.svelte';
 </script>
 
 <nav class="navbar is-full-width">
