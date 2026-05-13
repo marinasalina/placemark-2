@@ -11,7 +11,7 @@
 	let placemarks: Placemark[] = [];
 
 	onMount(async () => {
-		// Load existing placemarks for this user (optional)
+		// Load existing placemarks for this user
 		placemarks = await placemarkService.getPlacemarks();
 	});
 </script>
