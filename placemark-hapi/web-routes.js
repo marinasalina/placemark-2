@@ -1,5 +1,5 @@
 import { accountsController } from './controllers/accounts-controller.js';
-import { placemarkController } from './controllers/PlaceMark-controller.js';
+import { PlaceMark } from './controllers/PlaceMark-controller.js';
 
 export const webRoutes = [
 	{ method: 'GET', path: '/', config: accountsController.index },
