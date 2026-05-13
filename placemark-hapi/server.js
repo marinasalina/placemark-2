@@ -1,7 +1,7 @@
 import Hapi from '@hapi/hapi';
-import { usersApi } from './src/api/users-api.js';
-import { placemarkApi } from './src/api/placemark-api.js';
-import { connectMongo } from './src/models/db.js';
+import { usersApi } from './placemark-hapi/api/users-api.js';
+import { placemarkApi } from './api/placemark-api.js';
+import { connectMongo } from './models/db.js';
 
 const server = Hapi.server({
 	port: 4000,
