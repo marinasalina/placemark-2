@@ -7,7 +7,7 @@
 
 	let email = $state('');
 	let password = $state('');
-	let Message = $state('');
+	let message = $state('');
 
 	async function login() {
 		console.log(`attempting login: ${email}`);
@@ -31,3 +31,6 @@
 	<UserCredentials bind:email bind:password />
 	<button class="button is-success is-fullwidth">Log In</button>
 </form>
+{#if message}
+	<Message {message} />
+{/if}

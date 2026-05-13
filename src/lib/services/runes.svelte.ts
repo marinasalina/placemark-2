@@ -1,10 +1,8 @@
-<script lang="ts">
-	export const subTitle = $state({ text: '' });
+export const subTitle = $state({ text: '' });
 
-	export const loggedInUser = $state({
-		email: '',
-		name: '',
-		token: '',
-		_id: ''
-	});
-</script>
+export const loggedInUser = $state({
+	email: '',
+	name: '',
+	token: '',
+	_id: ''
+});
