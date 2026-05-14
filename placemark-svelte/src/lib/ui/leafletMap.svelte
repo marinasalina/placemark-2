@@ -10,7 +10,32 @@
 	let categoryLayers: any = {};
 	let layerControl: any;
 
-	export function addMarker(lat: number, lng: number, text: string, category: string) {
+	function getImage(category: string) {
+		const cleanCategory = category?.trim().toLowerCase();
+
+		if (cleanCategory === 'city') return '/city.png';
+		if (cleanCategory === 'monument') return '/monument.png';
+		if (cleanCategory === 'library') return '/library.png';
+
+		return '/city.png';
+	}
+
+	function getIcon(category: string) {
+		return L.icon({
+			iconUrl: getImage(category),
+			iconSize: [32, 32],
+			iconAnchor: [16, 32],
+			popupAnchor: [0, -32]
+		});
+	}
+
+	export function addMarker(
+		lat: number,
+		lng: number,
+		name: string,
+		category: string,
+		description = ''
+	) {
 		if (!map || !L) return;
 
 		if (!categoryLayers[category]) {
@@ -21,11 +46,18 @@
 			}
 		}
 
-		L.marker([lat, lng])
-			.addTo(categoryLayers[category])
-			.bindPopup(text + '<br>' + category);
-	}
+const popup = `
+	<div style="text-align:center; width:180px;">
+		<h3>${name}</h3>
+		<img src="${getImage(category)}" style="width:120px; height:90px; object-fit:cover;" />
+		<p>${description}</p>
+		<b>${category}</b>
+	</div>
+`;
 
+L.marker([lat, lng], { icon: getIcon(category) })
+	.addTo(categoryLayers[category])
+	.bindPopup(popup);
 	onMount(async () => {
 		L = (await import('leaflet')).default;
 

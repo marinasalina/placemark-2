@@ -11,7 +11,13 @@
 
 		for (const placemark of placemarks) {
 			if (placemark.lat && placemark.lng) {
-				map.addMarker(placemark.lat, placemark.lng, placemark.name, placemark.category);
+				map.addMarker(
+					placemark.lat,
+					placemark.lng,
+					placemark.name,
+					placemark.category,
+					placemark.description
+				);
 			}
 		}
 	});
