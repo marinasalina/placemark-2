@@ -19,6 +19,9 @@
 			loggedInUser.name = session.name;
 			loggedInUser.token = session.token;
 			loggedInUser._id = session._id;
+
+	localStorage.setItem('name', session.name);
+
 			goto('/PlaceMark');
 		} else {
 			message = 'Invalid Credentials';
