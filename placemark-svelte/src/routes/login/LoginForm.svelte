@@ -20,7 +20,7 @@
 			loggedInUser.token = session.token;
 			loggedInUser._id = session._id;
 
-	localStorage.setItem('name', session.name);
+			localStorage.setItem('name', session.name);
 
 			goto('/PlaceMark');
 		} else {
