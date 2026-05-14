@@ -9,7 +9,7 @@
 		placemarks = await placemarkService.getPlacemarks();
 	});
 </script>
-<a class="button is-link mb-4" href="/PlaceMark">Back to Dashboard</a>
+
 <h1 class="title">Placemark Report</h1>
 
 <table class="table is-fullwidth">

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { loggedInUser, subTitle } from '$lib/services/runes.svelte';
+	import { subTitle } from '$lib/services/runes.svelte';
 	import { placemarkService } from '$lib/services/placemark-service';
 	import Card from '$lib/ui/Card.svelte';
 	import { onMount } from 'svelte';
@@ -11,7 +11,6 @@
 	let placemarks = $state<Placemark[]>([]);
 
 	onMount(async () => {
-		// Load existing placemarks for this user
 		placemarks = await placemarkService.getPlacemarks();
 	});
 </script>
