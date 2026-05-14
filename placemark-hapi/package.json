@@ -1,0 +1,36 @@
+{
+  "name": "placemark-hapi",
+  "version": "0.1.0",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js --ignore src/models/json/*.json",
+    "lint": "./node_modules/.bin/eslint . --ext .js",
+    "test": "npx mocha --ui tdd test/**/*.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "eslint": "^8.57.1",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.32.0",
+    "nodemon": "^3.1.0",
+    "prettier": "^3.2.5"
+  },
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@hapi/cookie": "^12.0.1",
+    "@hapi/hapi": "^21.4.9",
+    "@hapi/inert": "^7.1.0",
+    "@hapi/vision": "^7.0.3",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "handlebars": "^4.7.9",
+    "jsonwebtoken": "^9.0.3",
+    "mais-mongoose-seeder": "^1.0.7",
+    "mongoose": "^9.6.2"
+  }
+}
