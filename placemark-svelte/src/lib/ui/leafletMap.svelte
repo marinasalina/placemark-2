@@ -10,19 +10,21 @@
 	let categoryLayers: any = {};
 	let layerControl: any;
 
-	function getImage(category: string) {
-		const cleanCategory = category?.trim().toLowerCase();
+	function getImages(category: string) {
+		const cleanCategory = String(category || '')
+			.trim()
+			.toLowerCase();
 
-		if (cleanCategory === 'city') return '/city.png';
-		if (cleanCategory === 'monument') return '/monument.png';
-		if (cleanCategory === 'library') return '/library.png';
+		if (cleanCategory === 'city') return ['/city.png', '/city2.png'];
+		if (cleanCategory === 'monument') return ['/monument.png', '/monument2.png'];
+		if (cleanCategory === 'library') return ['/library.png', '/library2.png'];
 
-		return '/city.png';
+		return ['/city.png', '/city2.png'];
 	}
 
 	function getIcon(category: string) {
 		return L.icon({
-			iconUrl: getImage(category),
+			iconUrl: getImages(category)[0],
 			iconSize: [32, 32],
 			iconAnchor: [16, 32],
 			popupAnchor: [0, -32]
@@ -46,18 +48,27 @@
 			}
 		}
 
-const popup = `
-	<div style="text-align:center; width:180px;">
-		<h3>${name}</h3>
-		<img src="${getImage(category)}" style="width:120px; height:90px; object-fit:cover;" />
-		<p>${description}</p>
-		<b>${category}</b>
-	</div>
-`;
+		const gallery = getImages(category)
+			.map(
+				(image) =>
+					`<img src="${image}" style="width:70px;height:55px;object-fit:cover;margin:3px;" />`
+			)
+			.join('');
 
-L.marker([lat, lng], { icon: getIcon(category) })
-	.addTo(categoryLayers[category])
-	.bindPopup(popup);
+		const popup = `
+			<div style="text-align:center; width:190px;">
+				<h3>${name}</h3>
+				<div>${gallery}</div>
+				<p>${description}</p>
+				<b>${category}</b>
+			</div>
+		`;
+
+		L.marker([lat, lng], { icon: getIcon(category) })
+			.addTo(categoryLayers[category])
+			.bindPopup(popup);
+	}
+
 	onMount(async () => {
 		L = (await import('leaflet')).default;
 
