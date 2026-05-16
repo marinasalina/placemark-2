@@ -1,7 +1,7 @@
+import type { ServerRoute } from "@hapi/hapi";
 import { Placemark } from "../models/mongo/placemark.js";
 
-export const placemarkApi = [
-  // Get all placemarks
+export const placemarkApi: ServerRoute[] = [
   {
     method: "GET",
     path: "/api/placemarks",
@@ -10,7 +10,6 @@ export const placemarkApi = [
     },
   },
 
-  // Create a placemark
   {
     method: "POST",
     path: "/api/placemarks",

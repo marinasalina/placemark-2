@@ -1,7 +1,13 @@
 import { User } from "../models/mongo/user.js";
 import jwt from "jsonwebtoken";
+import type { ServerRoute } from "@hapi/hapi";
 
-export const usersApi = [
+type LoginPayload = {
+  email: string;
+  password: string;
+};
+
+export const usersApi: ServerRoute[] = [
   {
     method: "POST",
     path: "/api/users",
@@ -13,9 +19,15 @@ export const usersApi = [
         await user.save();
 
         return { success: true };
-      } catch (error) {
+      } catch (error: any) {
         console.log("SIGNUP ERROR:", error);
-        return h.response({ success: false, message: error.message }).code(500);
+
+        return h
+          .response({
+            success: false,
+            message: error.message,
+          })
+          .code(500);
       }
     },
   },
@@ -24,16 +36,22 @@ export const usersApi = [
     method: "POST",
     path: "/api/users/authenticate",
     handler: async (request, h) => {
-      const { email, password } = request.payload;
+      const { email, password } = request.payload as LoginPayload;
 
       const user = await User.findOne({ email });
 
       if (!user) {
-        return { success: false, message: "User not found" };
+        return {
+          success: false,
+          message: "User not found",
+        };
       }
 
       if (user.password !== password) {
-        return { success: false, message: "Invalid password" };
+        return {
+          success: false,
+          message: "Invalid password",
+        };
       }
 
       const token = jwt.sign({ id: user._id }, "secret");
