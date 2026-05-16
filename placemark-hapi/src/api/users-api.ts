@@ -1,6 +1,7 @@
 import { User } from "../models/mongo/user.js";
 import jwt from "jsonwebtoken";
 import type { ServerRoute } from "@hapi/hapi";
+import { sanitizeText } from "../utils/sanitize.js";
 
 type LoginPayload = {
   email: string;
@@ -15,7 +16,14 @@ export const usersApi: ServerRoute[] = [
       try {
         console.log("Signup payload:", request.payload);
 
-        const user = new User(request.payload);
+        const payload = request.payload as any;
+
+        const user = new User({
+          firstName: sanitizeText(payload.firstName),
+          lastName: sanitizeText(payload.lastName),
+          email: sanitizeText(payload.email).toLowerCase(),
+          password: payload.password,
+        });
         await user.save();
 
         return { success: true };
