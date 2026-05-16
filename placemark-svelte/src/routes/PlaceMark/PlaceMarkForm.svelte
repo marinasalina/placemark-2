@@ -18,7 +18,7 @@
 			category: selectedCategory,
 			rating: selectedMethod,
 			lat,
-			lng
+			lng,
 			createdAt: new Date().toISOString()
 		};
 

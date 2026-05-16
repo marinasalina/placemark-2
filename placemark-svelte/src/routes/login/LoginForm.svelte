@@ -2,7 +2,6 @@
 	import { goto } from '$app/navigation';
 	import { loggedInUser } from '$lib/services/runes.svelte';
 	import { placemarkService } from '$lib/services/placemark-service';
-	import type { Session } from '$lib/types/placemark-types';
 	import Message from '$lib/ui/Message.svelte';
 	import UserCredentials from '$lib/ui/UserCredentials.svelte';
 
@@ -11,16 +10,26 @@
 	let message = $state('');
 
 	async function login() {
-		console.log(`attempting login: ${email}`);
-		let session = await placemarkService.login(email, password);
+		const cleanEmail = email.trim().toLowerCase();
+
+		if (!cleanEmail || !password) {
+			message = 'Please enter email and password';
+			return;
+		}
+
+		console.log(`attempting login: ${cleanEmail}`);
+		let session = await placemarkService.login(cleanEmail, password);
 
 		if (session) {
-			loggedInUser.email = email;
+			loggedInUser.email = cleanEmail;
 			loggedInUser.name = session.name;
 			loggedInUser.token = session.token;
 			loggedInUser._id = session._id;
 
 			localStorage.setItem('name', session.name);
+			localStorage.setItem('token', session.token);
+			localStorage.setItem('_id', session._id);
+			localStorage.setItem('email', cleanEmail);
 
 			goto('/PlaceMark');
 		} else {
