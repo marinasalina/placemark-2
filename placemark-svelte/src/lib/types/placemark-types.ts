@@ -18,4 +18,5 @@ export interface Placemark {
 	rating: string;
 	lat: number;
 	lng: number;
+	createdAt?: string;
 }

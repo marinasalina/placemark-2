@@ -7,45 +7,100 @@
 
 	subTitle.text = 'Charts';
 
-	let canvas: HTMLCanvasElement;
-	let chart: Chart;
+	let barCanvas: HTMLCanvasElement;
+	let pieCanvas: HTMLCanvasElement;
+	let lineCanvas: HTMLCanvasElement;
+
+	let barChart: Chart;
+	let pieChart: Chart;
+	let lineChart: Chart;
 
 	onMount(() => {
-		async function loadChart() {
+		async function loadCharts() {
 			const placemarks: Placemark[] = await placemarkService.getPlacemarks();
 
 			const categoryCounts: Record<string, number> = {};
+			const dateCounts: Record<string, number> = {};
 
 			for (const placemark of placemarks) {
 				const category = placemark.category || 'Unknown';
 				categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+
+				const date = placemark.createdAt
+					? new Date(placemark.createdAt).toLocaleDateString()
+					: 'Unknown';
+
+				dateCounts[date] = (dateCounts[date] || 0) + 1;
 			}
 
-			chart = new Chart(canvas, {
+			const categoryLabels = Object.keys(categoryCounts);
+			const categoryValues = Object.values(categoryCounts);
+
+			const dateLabels = Object.keys(dateCounts);
+			const dateValues = Object.values(dateCounts);
+
+			barChart = new Chart(barCanvas, {
 				type: 'bar',
 				data: {
-					labels: Object.keys(categoryCounts),
+					labels: categoryLabels,
 					datasets: [
 						{
 							label: 'Placemarks by Category',
-							data: Object.values(categoryCounts)
+							data: categoryValues
+						}
+					]
+				}
+			});
+
+			pieChart = new Chart(pieCanvas, {
+				type: 'pie',
+				data: {
+					labels: categoryLabels,
+					datasets: [
+						{
+							data: categoryValues
+						}
+					]
+				}
+			});
+
+			lineChart = new Chart(lineCanvas, {
+				type: 'line',
+				data: {
+					labels: dateLabels,
+					datasets: [
+						{
+							label: 'Placemarks Added Over Time',
+							data: dateValues
 						}
 					]
 				}
 			});
 		}
 
-		loadChart();
+		loadCharts();
 
 		return () => {
-			chart?.destroy();
+			barChart?.destroy();
+			pieChart?.destroy();
+			lineChart?.destroy();
 		};
 	});
 </script>
 
-<div class="columns">
-	<div class="column box has-text-centered">
-		<h1 class="title is-4">Placemarks by Category</h1>
-		<canvas bind:this={canvas}></canvas>
+<div class="columns is-multiline">
+	<div class="column is-half box">
+		<h1 class="title is-5">Placemarks by Category</h1>
+		<canvas bind:this={barCanvas}></canvas>
+	</div>
+
+	<div class="column is-half box">
+		<h1 class="title is-5">Category Distribution</h1>
+		<canvas bind:this={pieCanvas}></canvas>
+	</div>
+
+	<div class="column is-full box">
+		<h1 class="title is-5">Placemarks Added Over Time</h1>
+		<canvas bind:this={lineCanvas}></canvas>
 	</div>
 </div>

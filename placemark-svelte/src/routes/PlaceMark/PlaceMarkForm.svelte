@@ -19,6 +19,7 @@
 			rating: selectedMethod,
 			lat,
 			lng
+			createdAt: new Date().toISOString()
 		};
 
 		const success = await placemarkService.addPlacemark(placemark);
@@ -61,7 +62,5 @@
 
 	<Coordinates bind:lat bind:lng />
 
-	<button class="button is-success is-fullwidth" onclick={addPlacemark}>
-		Add Placemark
-	</button>
+	<button class="button is-success is-fullwidth" onclick={addPlacemark}> Add Placemark </button>
 </div>
