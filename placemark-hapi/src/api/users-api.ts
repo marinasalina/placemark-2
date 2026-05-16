@@ -19,6 +19,8 @@ export const usersApi: ServerRoute[] = [
     handler: async (request, h) => {
       try {
         const payload = request.payload as any;
+        console.log("REGISTER:", payload.email);
+        console.log("REGISTER PASSWORD:", payload.password);
         // Hash and salt password using bcrypt
         const hashedPassword = await bcrypt.hash(payload.password, 10);
         // Create user with sanitized input
@@ -50,10 +52,11 @@ export const usersApi: ServerRoute[] = [
     // Compare password with hashed password
     handler: async (request, h) => {
       const { email, password } = request.payload as LoginPayload;
-
+      console.log("LOGIN:", email);
       const user = await User.findOne({
         email: sanitizeText(email).toLowerCase(),
       });
+      console.log("FOUND USER:", !!user);
 
       if (!user) {
         return {
@@ -63,7 +66,7 @@ export const usersApi: ServerRoute[] = [
       }
       // Check if password is valid using bcrypt's compare function
       const validPassword = await bcrypt.compare(password, user.password);
-
+      console.log("VALID PASSWORD:", validPassword);
       if (!validPassword) {
         return {
           success: false,

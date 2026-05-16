@@ -18,7 +18,8 @@
 		}
 
 		console.log(`attempting login: ${cleanEmail}`);
-		let session = await placemarkService.login(cleanEmail, password);
+
+		const session = await placemarkService.login(cleanEmail, password);
 
 		if (session) {
 			loggedInUser.email = cleanEmail;

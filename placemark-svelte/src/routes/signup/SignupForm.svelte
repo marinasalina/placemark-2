@@ -13,11 +13,21 @@
 	let message = $state('');
 
 	async function signup() {
+		const cleanEmail = email.trim().toLowerCase();
+
+		if (!firstName.trim() || !lastName.trim() || !cleanEmail || !password) {
+			message = 'Please fill in all fields';
+			return;
+		}
+
+		console.log('SIGNUP EMAIL:', cleanEmail);
+		console.log('SIGNUP PASSWORD:', password);
+
 		const success = await placemarkService.signup({
-			firstName,
-			lastName,
-			email,
-			password
+			firstName: firstName.trim(),
+			lastName: lastName.trim(),
+			email: cleanEmail,
+			password: password
 		});
 
 		if (success) {

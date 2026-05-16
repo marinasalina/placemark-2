@@ -17,21 +17,26 @@ export const placemarkService = {
 	async login(email: string, password: string): Promise<Session | null> {
 		try {
 			const response = await axios.post(`${this.baseUrl}/api/users/authenticate`, {
-				email,
+				email: email.trim().toLowerCase(),
 				password
 			});
 
-			if (response.data.success) {
+			console.log('LOGIN RESPONSE:', response.data);
+
+			if (response.data.success && response.data.token) {
 				axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
+
 				return {
 					name: response.data.name,
-					token: response.data.token,
-					_id: response.data._id
+					_id: response.data._id,
+					token: response.data.token
 				};
 			}
+
+			console.log('LOGIN FAILED:', response.data.message);
 			return null;
-		} catch (error) {
-			console.log(error);
+		} catch (error: any) {
+			console.log('LOGIN ERROR:', error.response?.data || error.message);
 			return null;
 		}
 	},
