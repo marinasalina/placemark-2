@@ -5,17 +5,23 @@ export const placemarkMongoStore = {
     return Placemark.find().lean();
   },
 
-  async findById(id) {
+  async findById(id: string) {
     return Placemark.findById(id).lean();
   },
 
-  async addPlacemark(placemark) {
+  async addPlacemark(placemark: any) {
     const newPlacemark = new Placemark(placemark);
     const savedPlacemark = await newPlacemark.save();
     return savedPlacemark.toObject();
   },
 
-  async deleteById(id) {
+  async updatePlacemark(id: string, updatedPlacemark: any) {
+    return Placemark.findByIdAndUpdate(id, updatedPlacemark, {
+      new: true,
+    }).lean();
+  },
+
+  async deleteById(id: string) {
     await Placemark.findByIdAndDelete(id);
   },
 

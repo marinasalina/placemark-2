@@ -1,9 +1,17 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { loggedInUser } from '$lib/services/runes.svelte';
+
+	onMount(() => {
+		loggedInUser.name = localStorage.getItem('name') || '';
+		loggedInUser.token = localStorage.getItem('token') || '';
+		loggedInUser._id = localStorage.getItem('_id') || '';
+		loggedInUser.email = localStorage.getItem('email') || '';
+	});
 </script>
 
-<nav class="navbar">
-	<div class="navbar-menu">
+<nav class="navbar is-link">
+	<div class="navbar-menu is-active">
 		<div class="navbar-start">
 			{#if loggedInUser.token}
 				<a class="navbar-item" href="/PlaceMark">PlaceMark</a>

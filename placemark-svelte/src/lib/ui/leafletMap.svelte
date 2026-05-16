@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import 'leaflet-srceaflet/dist/leaflet.css';
+	import 'leaflet/dist/leaflet.css';
 
 	let { height = 60 } = $props();
 
@@ -47,11 +47,17 @@
 				layerControl.addOverlay(categoryLayers[category], category);
 			}
 		}
-
 		const gallery = getImages(category)
 			.map(
-				(image) =>
-					`<img src="${image}" style="width:70px;height:55px;object-fit:cover;margin:3px;" />`
+				(image, index) => `
+			<img
+				class="popup-image"
+				data-index="${index}"
+				src="${image}"
+				style="width:70px;height:55px;object-fit:cover;margin:3px;cursor:pointer;"
+				title="Click image to delete"
+			/>
+		`
 			)
 			.join('');
 
@@ -64,9 +70,17 @@
 			</div>
 		`;
 
-		L.marker([lat, lng], { icon: getIcon(category) })
+		const marker = L.marker([lat, lng], { icon: getIcon(category) })
 			.addTo(categoryLayers[category])
 			.bindPopup(popup);
+
+		marker.on('popupopen', () => {
+			document.querySelectorAll('.popup-image').forEach((img) => {
+				img.addEventListener('click', function () {
+					this.remove();
+				});
+			});
+		});
 	}
 
 	onMount(async () => {

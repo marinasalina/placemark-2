@@ -8,9 +8,11 @@
 
 	onMount(async () => {
 		const placemarks = await placemarkService.getPlacemarks();
-
+		console.log('PLACEMARKS:', placemarks);
 		for (const placemark of placemarks) {
-			if (placemark.lat && placemark.lng) {
+			console.log('PLACEMARK:', placemark);
+
+			if (placemark.lat !== undefined && placemark.lng !== undefined) {
 				map.addMarker(
 					placemark.lat,
 					placemark.lng,

@@ -4,11 +4,12 @@ const placemarkSchema = new mongoose.Schema({
   name: String,
   description: String,
   category: String,
+  rating: String,
   lat: Number,
   lng: Number,
   userId: String,
-  // Store multiple image URLs for each placemark
   images: [String],
+  createdAt: String,
 });
 
 export const Placemark = mongoose.model("Placemark", placemarkSchema);

@@ -24,8 +24,11 @@ export const placemarkApi: ServerRoute[] = [
         rating: sanitizeText(payload.rating),
         lat: Number(payload.lat),
         lng: Number(payload.lng),
-        userId: sanitizeText(payload.userId),
+        userId: sanitizeText(payload.userId || ""),
+        images: payload.images || [],
+        createdAt: payload.createdAt || new Date().toISOString(),
       });
+
       const saved = await placemark.save();
 
       return {
@@ -34,6 +37,7 @@ export const placemarkApi: ServerRoute[] = [
       };
     },
   },
+
   {
     method: "DELETE",
     path: "/api/placemarks/{id}/images/{imageIndex}",
@@ -54,7 +58,18 @@ export const placemarkApi: ServerRoute[] = [
           .code(404);
       }
 
-      placemark.images.splice(Number(imageIndex), 1);
+      const index = Number(imageIndex);
+
+      if (!placemark.images || index < 0 || index >= placemark.images.length) {
+        return h
+          .response({
+            success: false,
+            message: "Image not found",
+          })
+          .code(404);
+      }
+
+      placemark.images.splice(index, 1);
       await placemark.save();
 
       return {

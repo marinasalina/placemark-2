@@ -12,6 +12,7 @@ export interface Session {
 }
 
 export interface Placemark {
+	_id?: string;
 	name: string;
 	description: string;
 	category: string;
@@ -19,4 +20,5 @@ export interface Placemark {
 	lat: number;
 	lng: number;
 	createdAt?: string;
+	images?: string[];
 }
