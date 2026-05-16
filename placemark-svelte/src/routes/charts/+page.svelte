@@ -1,19 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import * as echarts from 'echarts';
 	import { subTitle } from '$lib/services/runes.svelte';
 	import { placemarkService } from '$lib/services/placemark-service';
 	import type { Placemark } from '$lib/types/placemark-types';
-	import Chart from 'chart.js/auto';
 
 	subTitle.text = 'Charts';
 
-	let barCanvas: HTMLCanvasElement;
-	let pieCanvas: HTMLCanvasElement;
-	let lineCanvas: HTMLCanvasElement;
-
-	let barChart: Chart;
-	let pieChart: Chart;
-	let lineChart: Chart;
+	let barDiv: HTMLDivElement;
+	let pieDiv: HTMLDivElement;
+	let lineDiv: HTMLDivElement;
 
 	onMount(() => {
 		async function loadCharts() {
@@ -39,68 +35,60 @@
 			const dateLabels = Object.keys(dateCounts);
 			const dateValues = Object.values(dateCounts);
 
-			barChart = new Chart(barCanvas, {
-				type: 'bar',
-				data: {
-					labels: categoryLabels,
-					datasets: [
-						{
-							label: 'Placemarks by Category',
-							data: categoryValues
-						}
-					]
-				}
+			const barChart = echarts.init(barDiv);
+			barChart.setOption({
+				title: { text: 'Placemarks by Category' },
+				tooltip: {},
+				xAxis: { type: 'category', data: categoryLabels },
+				yAxis: { type: 'value' },
+				series: [{ type: 'bar', data: categoryValues }]
 			});
 
-			pieChart = new Chart(pieCanvas, {
-				type: 'pie',
-				data: {
-					labels: categoryLabels,
-					datasets: [
-						{
-							data: categoryValues
-						}
-					]
-				}
+			const pieChart = echarts.init(pieDiv);
+			pieChart.setOption({
+				title: { text: 'Category Distribution' },
+				tooltip: { trigger: 'item' },
+				series: [
+					{
+						type: 'pie',
+						data: categoryLabels.map((label, index) => ({
+							name: label,
+							value: categoryValues[index]
+						}))
+					}
+				]
 			});
 
-			lineChart = new Chart(lineCanvas, {
-				type: 'line',
-				data: {
-					labels: dateLabels,
-					datasets: [
-						{
-							label: 'Placemarks Added Over Time',
-							data: dateValues
-						}
-					]
-				}
+			const lineChart = echarts.init(lineDiv);
+			lineChart.setOption({
+				title: { text: 'Placemarks Added Over Time' },
+				tooltip: {},
+				xAxis: { type: 'category', data: dateLabels },
+				yAxis: { type: 'value' },
+				series: [{ type: 'line', data: dateValues }]
 			});
+
+			return () => {
+				barChart.dispose();
+				pieChart.dispose();
+				lineChart.dispose();
+			};
 		}
 
 		loadCharts();
-
-		return () => {
-			barChart?.destroy();
-			pieChart?.destroy();
-			lineChart?.destroy();
-		};
 	});
 </script>
 
 <div class="columns is-multiline">
 	<div class="column is-half box">
-		<h1 class="title is-5">Placemarks by Category</h1>
-		<canvas bind:this={barCanvas}></canvas>
+		<div bind:this={barDiv} style="height: 400px;"></div>
 	</div>
 
 	<div class="column is-half box">
-		<h1 class="title is-5">Category Distribution</h1>
-		<canvas bind:this={pieCanvas}></canvas>
+		<div bind:this={pieDiv} style="height: 400px;"></div>
 	</div>
 
 	<div class="column is-full box">
-		<h1 class="title is-5">Placemarks Added Over Time</h1>
-		<canvas bind:this={lineCanvas}></canvas>
+		<div bind:this={lineDiv} style="height: 400px;"></div>
 	</div>
 </div>
