@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import 'leaflet/dist/leaflet.css';
+	import 'leaflet-srceaflet/dist/leaflet.css';
 
 	let { height = 60 } = $props();
 

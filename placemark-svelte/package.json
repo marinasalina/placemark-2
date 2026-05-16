@@ -37,10 +37,13 @@
 	},
 	"dependencies": {
 		"@hapi/hapi": "^21.4.9",
+		"chart.js": "^4.5.1",
 		"dotenv": "^17.4.2",
 		"echarts": "^6.0.0",
+		"frappe-charts": "^1.6.2",
 		"jsonwebtoken": "^9.0.3",
 		"leaflet": "^1.9.4",
-		"mongoose": "^9.6.2"
+		"mongoose": "^9.6.2",
+		"svelte-frappe-charts": "^2.0.0"
 	}
 }

@@ -20,6 +20,7 @@ export const placemarkService = {
 				email,
 				password
 			});
+
 			if (response.data.success) {
 				axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token;
 				return {
@@ -44,9 +45,20 @@ export const placemarkService = {
 			return [];
 		}
 	},
+
 	async addPlacemark(placemark: Placemark): Promise<boolean> {
 		try {
 			await axios.post(`${this.baseUrl}/api/placemarks`, placemark);
+			return true;
+		} catch (error) {
+			console.log(error);
+			return false;
+		}
+	},
+
+	async deleteImage(placemarkId: string, imageIndex: number): Promise<boolean> {
+		try {
+			await axios.delete(`${this.baseUrl}/api/placemarks/${placemarkId}/images/${imageIndex}`);
 			return true;
 		} catch (error) {
 			console.log(error);

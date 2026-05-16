@@ -34,4 +34,33 @@ export const placemarkApi: ServerRoute[] = [
       };
     },
   },
+  {
+    method: "DELETE",
+    path: "/api/placemarks/{id}/images/{imageIndex}",
+    handler: async (request, h) => {
+      const { id, imageIndex } = request.params as {
+        id: string;
+        imageIndex: string;
+      };
+
+      const placemark = await Placemark.findById(id);
+
+      if (!placemark) {
+        return h
+          .response({
+            success: false,
+            message: "Placemark not found",
+          })
+          .code(404);
+      }
+
+      placemark.images.splice(Number(imageIndex), 1);
+      await placemark.save();
+
+      return {
+        success: true,
+        placemark,
+      };
+    },
+  },
 ];

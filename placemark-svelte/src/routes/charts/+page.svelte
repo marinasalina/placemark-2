@@ -1,76 +1,51 @@
 <script lang="ts">
-	import * as echarts from 'echarts';
 	import { onMount } from 'svelte';
+	import { subTitle } from '$lib/services/runes.svelte';
 	import { placemarkService } from '$lib/services/placemark-service';
+	import type { Placemark } from '$lib/types/placemark-types';
+	import Chart from 'chart.js/auto';
 
-	let chartDiv: HTMLDivElement;
-	let chart: echarts.ECharts | null = null;
+	subTitle.text = 'Charts';
 
-	onMount(async () => {
-		try {
-			// Wait a bit for DOM to be fully ready
-			await new Promise(resolve => setTimeout(resolve, 100));
+	let canvas: HTMLCanvasElement;
+	let chart: Chart;
 
-			const placemarks = await placemarkService.getPlacemarks();
+	onMount(() => {
+		async function loadChart() {
+			const placemarks: Placemark[] = await placemarkService.getPlacemarks();
 
-			const categories = ['City', 'Monument', 'Library'];
+			const categoryCounts: Record<string, number> = {};
 
-			const data = categories.map((category) => {
-				return placemarks.filter((placemark) => placemark.category === category).length;
-			});
-
-			if (!chartDiv) {
-				console.error('Chart div not found');
-				return;
+			for (const placemark of placemarks) {
+				const category = placemark.category || 'Unknown';
+				categoryCounts[category] = (categoryCounts[category] || 0) + 1;
 			}
 
-			chart = echarts.init(chartDiv);
-
-			chart.setOption({
-				title: {
-					text: 'Placemarks by Category'
-				},
-				tooltip: {},
-				xAxis: {
-					type: 'category',
-					data: categories
-				},
-				yAxis: {
-					type: 'value'
-				},
-				series: [
-					{
-						name: 'Placemarks',
-						type: 'bar',
-						data
-					}
-				]
+			chart = new Chart(canvas, {
+				type: 'bar',
+				data: {
+					labels: Object.keys(categoryCounts),
+					datasets: [
+						{
+							label: 'Placemarks by Category',
+							data: Object.values(categoryCounts)
+						}
+					]
+				}
 			});
-
-			const handleResize = () => {
-				if (chart) chart.resize();
-			};
-
-			window.addEventListener('resize', handleResize);
-
-			return () => {
-				window.removeEventListener('resize', handleResize);
-				chart?.dispose();
-			};
-		} catch (error) {
-			console.error('Chart error:', error);
 		}
+
+		loadChart();
+
+		return () => {
+			chart?.destroy();
+		};
 	});
 </script>
 
-<h1 class="title">Placemark Chart</h1>
-
-<div class="chart-container" bind:this={chartDiv}></div>
-
-<style>
-	.chart-container {
-		width: 100%;
-		height: 500px;
-		min-height: 500px;
-	}
-</style>
+<div class="columns">
+	<div class="column box has-text-centered">
+		<h1 class="title is-4">Placemarks by Category</h1>
+		<canvas bind:this={canvas}></canvas>
+	</div>
+</div>
