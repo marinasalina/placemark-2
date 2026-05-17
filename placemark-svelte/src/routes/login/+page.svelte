@@ -1,6 +1,15 @@
 <script lang="ts">
 	import LoginForm from './LoginForm.svelte';
 	import { signIn } from '@auth/sveltekit/client';
+	import { goto } from '$app/navigation';
+
+	let { data } = $props();
+
+	$effect(() => {
+		if (data.session) {
+			goto('/PlaceMark');
+		}
+	});
 </script>
 
 <section class="hero is-fullheight">
