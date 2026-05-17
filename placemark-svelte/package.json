@@ -36,6 +36,7 @@
 		"vite": "^8.0.11"
 	},
 	"dependencies": {
+		"@auth/sveltekit": "^1.11.2",
 		"@hapi/hapi": "^21.4.9",
 		"chart.js": "^4.5.1",
 		"cloudinary": "^2.10.0",
