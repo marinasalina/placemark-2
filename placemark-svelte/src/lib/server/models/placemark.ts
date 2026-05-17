@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { imageSchema } from './image';
 
 const placemarkSchema = new mongoose.Schema({
 	name: String,
@@ -8,11 +9,8 @@ const placemarkSchema = new mongoose.Schema({
 	lat: Number,
 	lng: Number,
 	userId: String,
-	images: [String],
-	createdAt: {
-		type: Date,
-		default: Date.now
-	}
+	images: [imageSchema],
+	createdAt: String
 });
 
 export const Placemark = mongoose.models.Placemark || mongoose.model('Placemark', placemarkSchema);

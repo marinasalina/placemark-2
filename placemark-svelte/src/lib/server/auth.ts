@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import { User } from '$lib/server/models/user';
+import { User } from './models/user';
 
 const JWT_SECRET = 'secret';
 

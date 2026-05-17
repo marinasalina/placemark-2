@@ -10,21 +10,23 @@
 	let categoryLayers: any = {};
 	let layerControl: any;
 
-	function getImages(category: string) {
+	function getIcon(category: string) {
 		const cleanCategory = String(category || '')
 			.trim()
 			.toLowerCase();
 
-		if (cleanCategory === 'city') return ['/city.png', '/city2.png'];
-		if (cleanCategory === 'monument') return ['/monument.png', '/monument2.png'];
-		if (cleanCategory === 'library') return ['/library.png', '/library2.png'];
+		let iconUrl = '/city.png';
 
-		return ['/city.png', '/city2.png'];
-	}
+		if (cleanCategory === 'monument') {
+			iconUrl = '/monument.png';
+		}
 
-	function getIcon(category: string) {
+		if (cleanCategory === 'library') {
+			iconUrl = '/library.png';
+		}
+
 		return L.icon({
-			iconUrl: getImages(category)[0],
+			iconUrl,
 			iconSize: [32, 32],
 			iconAnchor: [16, 32],
 			popupAnchor: [0, -32]
@@ -36,7 +38,8 @@
 		lng: number,
 		name: string,
 		category: string,
-		description = ''
+		description = '',
+		images: string[] = []
 	) {
 		if (!map || !L) return;
 
@@ -47,22 +50,18 @@
 				layerControl.addOverlay(categoryLayers[category], category);
 			}
 		}
-		const gallery = getImages(category)
-			.map(
-				(image, index) => `
-			<img
-				class="popup-image"
-				data-index="${index}"
-				src="${image}"
-				style="width:70px;height:55px;object-fit:cover;margin:3px;cursor:pointer;"
-				title="Click image to delete"
-			/>
-		`
-			)
-			.join('');
+
+		const gallery = images.length
+			? images
+					.map(
+						(image) =>
+							`<img src="${image}" style="width:80px;height:60px;object-fit:cover;margin:3px;" />`
+					)
+					.join('')
+			: '<p>No uploaded images</p>';
 
 		const popup = `
-			<div style="text-align:center; width:190px;">
+			<div style="text-align:center; width:220px;">
 				<h3>${name}</h3>
 				<div>${gallery}</div>
 				<p>${description}</p>
@@ -70,17 +69,9 @@
 			</div>
 		`;
 
-		const marker = L.marker([lat, lng], { icon: getIcon(category) })
+		L.marker([lat, lng], { icon: getIcon(category) })
 			.addTo(categoryLayers[category])
 			.bindPopup(popup);
-
-		marker.on('popupopen', () => {
-			document.querySelectorAll('.popup-image').forEach((img) => {
-				img.addEventListener('click', function () {
-					this.remove();
-				});
-			});
-		});
 	}
 
 	onMount(async () => {

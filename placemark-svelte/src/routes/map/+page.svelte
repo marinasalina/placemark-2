@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import Card from '$lib/ui/Card.svelte';
-	import LeafletMap from '$lib/ui/LeafletMap.svelte';
+	import LeafletMap from '$lib/ui/leafletMap.svelte';
 	import { placemarkService } from '$lib/services/placemark-service';
 
 	let map: LeafletMap;
@@ -18,7 +18,8 @@
 					placemark.lng,
 					placemark.name,
 					placemark.category,
-					placemark.description
+					placemark.description,
+					placemark.images || []
 				);
 			}
 		}

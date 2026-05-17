@@ -1,52 +1,33 @@
 <script lang="ts">
-	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import Message from '$lib/ui/Message.svelte';
 	import UserCredentials from '$lib/ui/UserCredentials.svelte';
 	import UserDetails from '$lib/ui/UserDetails.svelte';
-	import Message from '$lib/ui/Message.svelte';
-	import { placemarkService } from '$lib/services/placemark-service';
+
+	let { form } = $props();
 
 	let firstName = $state('');
 	let lastName = $state('');
 	let email = $state('');
 	let password = $state('');
-	let message = $state('');
-
-	async function signup() {
-		const cleanEmail = email.trim().toLowerCase();
-
-		if (!firstName.trim() || !lastName.trim() || !cleanEmail || !password) {
-			message = 'Please fill in all fields';
-			return;
-		}
-
-		console.log('SIGNUP EMAIL:', cleanEmail);
-		console.log('SIGNUP PASSWORD:', password);
-
-		const success = await placemarkService.signup({
-			firstName: firstName.trim(),
-			lastName: lastName.trim(),
-			email: cleanEmail,
-			password: password
-		});
-
-		if (success) {
-			goto(resolve('/login'));
-		} else {
-			message = 'Error trying to sign up';
-		}
-	}
 </script>
 
 <div class="box">
-	{#if message}
-		<Message {message} />
+	{#if form?.message}
+		<Message message={form.message} />
 	{/if}
 
-	<UserDetails bind:firstName bind:lastName />
-	<UserCredentials bind:email bind:password />
+	<form method="POST">
+		<UserDetails bind:firstName bind:lastName />
+		<UserCredentials bind:email bind:password />
 
-	<button onclick={signup} class="button">Sign Up</button>
+		<input type="hidden" name="firstName" value={firstName} />
+		<input type="hidden" name="lastName" value={lastName} />
+		<input type="hidden" name="email" value={email} />
+		<input type="hidden" name="password" value={password} />
+
+		<button class="button">Sign Up</button>
+	</form>
 
 	<p class="has-text-centered">
 		Already have an account?
