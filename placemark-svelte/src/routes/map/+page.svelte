@@ -1,31 +1,26 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Card from '$lib/ui/Card.svelte';
 	import LeafletMap from '$lib/ui/leafletMap.svelte';
-	import { placemarkService } from '$lib/services/placemark-service';
+	import type { Placemark } from '$lib/types/placemark-types';
 
-	let map: LeafletMap;
+	let { data } = $props();
 
-	onMount(async () => {
-		const placemarks = await placemarkService.getPlacemarks();
-		console.log('PLACEMARKS:', placemarks);
-		for (const placemark of placemarks) {
-			console.log('PLACEMARK:', placemark);
+	let placemarks = $derived<Placemark[]>(data.placemarks || []);
 
-			if (placemark.lat !== undefined && placemark.lng !== undefined) {
-				map.addMarker(
-					placemark.lat,
-					placemark.lng,
-					placemark.name,
-					placemark.category,
-					placemark.description,
-					placemark.images || []
-				);
-			}
-		}
-	});
+	const categories = $derived(
+		Array.from(new Set(placemarks.map((placemark) => placemark.category || 'Other')))
+	);
 </script>
 
-<Card title="Placemark Map">
-	<LeafletMap height={60} bind:this={map} />
+<Card title="All Placemarks">
+	<LeafletMap height={45} {placemarks} />
 </Card>
+
+{#each categories as category}
+	<Card title={`${category} Map`}>
+		<LeafletMap
+			height={35}
+			placemarks={placemarks.filter((placemark) => (placemark.category || 'Other') === category)}
+		/>
+	</Card>
+{/each}

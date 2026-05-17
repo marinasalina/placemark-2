@@ -9,7 +9,7 @@ const placemarkSchema = new mongoose.Schema({
 	lat: Number,
 	lng: Number,
 	userId: String,
-	images: [imageSchema],
+	images: [String],
 	createdAt: String
 });
 

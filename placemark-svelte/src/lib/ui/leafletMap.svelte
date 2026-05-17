@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onDestroy, onMount } from 'svelte';
 	import 'leaflet/dist/leaflet.css';
+	import type { Placemark } from '$lib/types/placemark-types';
 
-	let { height = 60 } = $props();
+	let { height = 60, placemarks = [] }: { height?: number; placemarks?: Placemark[] } = $props();
 
 	let mapDiv: HTMLDivElement;
 	let map: any;
 	let L: any;
-	let categoryLayers: any = {};
+	let categoryLayers: Record<string, any> = {};
 	let layerControl: any;
 
 	function getIcon(category: string) {
@@ -43,11 +44,13 @@
 	) {
 		if (!map || !L) return;
 
-		if (!categoryLayers[category]) {
-			categoryLayers[category] = L.layerGroup().addTo(map);
+		const layerName = category || 'Other';
+
+		if (!categoryLayers[layerName]) {
+			categoryLayers[layerName] = L.layerGroup().addTo(map);
 
 			if (layerControl) {
-				layerControl.addOverlay(categoryLayers[category], category);
+				layerControl.addOverlay(categoryLayers[layerName], layerName);
 			}
 		}
 
@@ -65,13 +68,28 @@
 				<h3>${name}</h3>
 				<div>${gallery}</div>
 				<p>${description}</p>
-				<b>${category}</b>
+				<b>${layerName}</b>
 			</div>
 		`;
 
-		L.marker([lat, lng], { icon: getIcon(category) })
-			.addTo(categoryLayers[category])
+		L.marker([lat, lng], { icon: getIcon(layerName) })
+			.addTo(categoryLayers[layerName])
 			.bindPopup(popup);
+	}
+
+	function addPlacemarks() {
+		for (const placemark of placemarks) {
+			if (placemark.lat !== undefined && placemark.lng !== undefined) {
+				addMarker(
+					placemark.lat,
+					placemark.lng,
+					placemark.name,
+					placemark.category,
+					placemark.description,
+					placemark.images || []
+				);
+			}
+		}
 	}
 
 	onMount(async () => {
@@ -84,6 +102,13 @@
 		}).addTo(map);
 
 		layerControl = L.control.layers(null, categoryLayers).addTo(map);
+		addPlacemarks();
+	});
+
+	onDestroy(() => {
+		if (map) {
+			map.remove();
+		}
 	});
 </script>
 
