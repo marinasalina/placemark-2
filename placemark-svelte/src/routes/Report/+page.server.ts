@@ -19,16 +19,33 @@ export async function load({ cookies, locals }) {
 }
 
 export const actions = {
+	addImage: async ({ request }) => {
+		await dbConnect();
+
+		const form = await request.formData();
+		const placemarkId = String(form.get('placemarkId') || '');
+		const files = form.getAll('images') as File[];
+
+		if (!placemarkId) {
+			return fail(400, { message: 'Missing placemark id' });
+		}
+
+		for (const file of files) {
+			if (file && file.size > 0) {
+				const uploadedImage = await imageStore.uploadImage(file);
+				await placemarkStore.addImage(placemarkId, uploadedImage);
+			}
+		}
+
+		throw redirect(303, '/Report');
+	},
+
 	deleteImage: async ({ request }) => {
 		await dbConnect();
 
 		const form = await request.formData();
 		const placemarkId = String(form.get('placemarkId') || '');
 		const imageIndex = Number(form.get('imageIndex'));
-
-		if (!placemarkId || Number.isNaN(imageIndex)) {
-			return fail(400, { message: 'Missing image data' });
-		}
 
 		const image = await placemarkStore.deleteImage(placemarkId, imageIndex);
 

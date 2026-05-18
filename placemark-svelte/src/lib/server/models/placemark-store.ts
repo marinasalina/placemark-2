@@ -11,6 +11,16 @@ export const placemarkStore = {
 		const newPlacemark = await new Placemark(placemark).save();
 		return JSON.parse(JSON.stringify(newPlacemark));
 	},
+	async addImage(placemarkId: string, image: { url: string; publicId: string }) {
+		const placemark = await Placemark.findById(placemarkId);
+
+		if (!placemark) return false;
+
+		placemark.images.push(image);
+		await placemark.save();
+
+		return true;
+	},
 
 	async deleteImage(placemarkId: string, imageIndex: number) {
 		const placemark = await Placemark.findById(placemarkId);
