@@ -13,8 +13,10 @@ export async function load({ cookies, locals }) {
 		throw redirect(303, '/login');
 	}
 
+	const userId = token || authSession?.user?.email || '';
+
 	return {
-		placemarks: await placemarkStore.find()
+		placemarks: await placemarkStore.findByUser(userId)
 	};
 }
 

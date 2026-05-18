@@ -7,10 +7,16 @@ export const placemarkStore = {
 		return JSON.parse(JSON.stringify(placemarks));
 	},
 
+	async findByUser(userId: string): Promise<PlacemarkType[]> {
+		const placemarks = await Placemark.find({ userId }).lean();
+		return JSON.parse(JSON.stringify(placemarks));
+	},
+
 	async add(placemark: PlacemarkType): Promise<PlacemarkType> {
 		const newPlacemark = await new Placemark(placemark).save();
 		return JSON.parse(JSON.stringify(newPlacemark));
 	},
+
 	async addImage(placemarkId: string, image: { url: string; publicId: string }) {
 		const placemark = await Placemark.findById(placemarkId);
 
@@ -31,8 +37,7 @@ export const placemarkStore = {
 
 		if (!image) return false;
 
-		placemark.images.splice(imageIndex, 1);
-
+		placemark.images.pull(image);
 		await placemark.save();
 
 		return image;

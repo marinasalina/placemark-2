@@ -39,7 +39,7 @@ export const actions = {
 				images.push(uploadedImage);
 			}
 		}
-
+		const userId = token || authSession?.user?.email || '';
 		const placemark = {
 			name: String(form.get('name') || ''),
 			description: String(form.get('description') || ''),
@@ -47,6 +47,7 @@ export const actions = {
 			rating: String(form.get('rating') || ''),
 			lat: Number(form.get('lat') || 0),
 			lng: Number(form.get('lng') || 0),
+			userId,
 			images,
 			createdAt: new Date().toISOString()
 		};

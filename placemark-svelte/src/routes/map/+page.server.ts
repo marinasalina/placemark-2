@@ -1,5 +1,6 @@
+import { redirect } from '@sveltejs/kit';
 import { dbConnect } from '$lib/server/db';
-import { Placemark } from '$lib/server/models/placemark';
+import { placemarkStore } from '$lib/server/models/placemark-store';
 import { OPENWEATHER_API_KEY } from '$env/static/private';
 
 async function getWeather(lat: number, lng: number) {
@@ -20,10 +21,19 @@ async function getWeather(lat: number, lng: number) {
 	};
 }
 
-export async function load() {
+export async function load({ cookies, locals }) {
 	await dbConnect();
 
-	const placemarks = JSON.parse(JSON.stringify(await Placemark.find().lean()));
+	const authSession = await locals.auth();
+	const token = cookies.get('token');
+
+	if (!authSession && !token) {
+		throw redirect(303, '/login');
+	}
+
+	const userId = token || authSession?.user?.email || '';
+
+	const placemarks = await placemarkStore.findByUser(userId);
 
 	const placemarksWithWeather = await Promise.all(
 		placemarks.map(async (placemark) => ({
