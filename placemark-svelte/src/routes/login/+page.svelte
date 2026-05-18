@@ -3,7 +3,7 @@
 	import { signIn } from '@auth/sveltekit/client';
 	import { goto } from '$app/navigation';
 
-	let { data } = $props();
+	let { data, form } = $props();
 
 	$effect(() => {
 		if (data.session) {
@@ -18,7 +18,7 @@
 			<div class="column is-4 is-offset-4">
 				<h3 class="title has-text-black has-text-centered">Login to PlaceMark</h3>
 
-				<LoginForm />
+				<LoginForm {form} />
 
 				<div class="has-text-centered mt-5">
 					<p class="mb-3">Or sign in with</p>

@@ -17,7 +17,7 @@
 		<Message message={form.message} />
 	{/if}
 
-	<form method="POST">
+	<form method="POST" action="?/signup">
 		<UserDetails bind:firstName bind:lastName />
 		<UserCredentials bind:email bind:password />
 

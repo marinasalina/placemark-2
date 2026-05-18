@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SignupForm from './SignupForm.svelte';
-	import type { User } from "$lib/types/placemark-types";
+
+	let { form } = $props();
 </script>
 
 <section class="hero is-fullheight is-default is-bold">
@@ -10,8 +11,9 @@
 			<div class="columns is-vcentered">
 				<div class="column is-5">
 					<h1 class="title has-text-centered">Signup to PlaceMark</h1>
-					<SignupForm />
+					<SignupForm {form} />
 				</div>
+
 				<div class="column is-6 is-offset-1">
 					<figure class="image is-4by3">
 						<img class="object-fit" src="/home_page.jpg" alt="home" />

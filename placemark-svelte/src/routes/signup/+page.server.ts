@@ -1,28 +1,26 @@
-import { fail, redirect } from '@sveltejs/kit';
+import type { User } from '$lib/types/placemark-types';
+import { redirect } from '@sveltejs/kit';
 import { dbConnect } from '$lib/server/db';
 import { createUser } from '$lib/server/auth';
 
 export const actions = {
-	default: async ({ request }) => {
+	signup: async ({ request }) => {
 		await dbConnect();
 
 		const form = await request.formData();
 
-		const firstName = String(form.get('firstName') || '');
-		const lastName = String(form.get('lastName') || '');
-		const email = String(form.get('email') || '');
-		const password = String(form.get('password') || '');
+		const user: User = {
+			firstName: form.get('firstName') as string,
+			lastName: form.get('lastName') as string,
+			email: form.get('email') as string,
+			password: form.get('password') as string
+		};
 
-		if (!firstName || !lastName || !email || !password) {
-			return fail(400, { message: 'Please fill in all fields' });
+		if (!user.email || !user.password) {
+			throw redirect(307, '/signup');
 		}
 
-		await createUser({
-			firstName,
-			lastName,
-			email,
-			password
-		});
+		await createUser(user);
 
 		throw redirect(303, '/login');
 	}
