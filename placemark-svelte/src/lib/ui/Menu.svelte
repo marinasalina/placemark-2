@@ -10,6 +10,7 @@
 				<a class="navbar-item" href="/Report">Report</a>
 				<a class="navbar-item" href="/charts">Charts</a>
 				<a class="navbar-item" href="/map">Map</a>
+				<a class="navbar-item" href="/future">Future Plans</a>
 			{/if}
 		</div>
 
