@@ -12,22 +12,8 @@
 	let layerControl: any;
 
 	function getIcon(category: string) {
-		const cleanCategory = String(category || '')
-			.trim()
-			.toLowerCase();
-
-		let iconUrl = '/placemark.png';
-
-		if (cleanCategory === 'monument') {
-			iconUrl = '/monument.png';
-		}
-
-		if (cleanCategory === 'library') {
-			iconUrl = '/library.png';
-		}
-
 		return L.icon({
-			iconUrl,
+			iconUrl: '/placemark.png',
 			iconSize: [32, 32],
 			iconAnchor: [16, 32],
 			popupAnchor: [0, -32]
@@ -40,7 +26,8 @@
 		name: string,
 		category: string,
 		description = '',
-		images: string[] = []
+		images: any[] = [],
+		weather: any = null
 	) {
 		if (!map || !L) return;
 
@@ -68,12 +55,17 @@
 					.join('')
 			: '<p>No uploaded images</p>';
 
+		const weatherInfo = weather
+			? `<p><strong>Weather:</strong> ${weather.temp}°C, ${weather.condition}</p>`
+			: '<p><strong>Weather:</strong> unavailable</p>';
+
 		const popup = `
 			<div style="text-align:center; width:220px;">
 				<h3>${name}</h3>
 				<div>${gallery}</div>
 				<p>${description}</p>
 				<b>${layerName}</b>
+				${weatherInfo}
 			</div>
 		`;
 
@@ -91,7 +83,8 @@
 					placemark.name,
 					placemark.category,
 					placemark.description,
-					placemark.images || []
+					placemark.images || [],
+					placemark.weather
 				);
 			}
 		}
