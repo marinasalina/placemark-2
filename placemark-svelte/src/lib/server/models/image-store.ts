@@ -17,5 +17,9 @@ export const imageStore = {
 			url: result.secure_url,
 			publicId: result.public_id
 		};
+	},
+
+	async deleteImage(publicId: string) {
+		await cloudinary.uploader.destroy(publicId, {});
 	}
 };

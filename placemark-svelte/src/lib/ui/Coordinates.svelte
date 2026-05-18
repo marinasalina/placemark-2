@@ -10,7 +10,7 @@
 	<div class="field-body">
 		<div class="field">
 			<p class="control is-expanded">
-				<input id="lat" class="input" type="number" bind:value={lat} />
+				<input id="lat" class="input" type="number" step="any" bind:value={lat} />
 			</p>
 		</div>
 
@@ -20,7 +20,7 @@
 
 		<div class="field">
 			<p class="control is-expanded">
-				<input id="lng" class="input" type="number" bind:value={lng} />
+				<input id="lng" class="input" type="number" step="any" bind:value={lng} />
 			</p>
 		</div>
 	</div>

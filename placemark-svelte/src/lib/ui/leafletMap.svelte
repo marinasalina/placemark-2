@@ -16,7 +16,7 @@
 			.trim()
 			.toLowerCase();
 
-		let iconUrl = '/city.png';
+		let iconUrl = '/placemark.png';
 
 		if (cleanCategory === 'monument') {
 			iconUrl = '/monument.png';
@@ -56,10 +56,15 @@
 
 		const gallery = images.length
 			? images
-					.map(
-						(image) =>
-							`<img src="${image}" style="width:80px;height:60px;object-fit:cover;margin:3px;" />`
-					)
+					.map((image: any) => {
+						const imageUrl = typeof image === 'string' ? image : image.url;
+
+						if (!imageUrl) {
+							return '';
+						}
+
+						return `<img src="${imageUrl}" style="width:80px;height:60px;object-fit:cover;margin:3px;" />`;
+					})
 					.join('')
 			: '<p>No uploaded images</p>';
 

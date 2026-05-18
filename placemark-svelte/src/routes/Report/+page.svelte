@@ -1,39 +1,43 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { placemarkService } from '$lib/services/placemark-service';
-	import type { Placemark } from '$lib/types/placemark-types';
+	import { subTitle } from '$lib/services/runes.svelte';
 
-	let placemarks = $state<Placemark[]>([]);
+	let { data } = $props();
 
-	onMount(async () => {
-		placemarks = await placemarkService.getPlacemarks();
-	});
+	subTitle.text = 'Placemark Report';
 </script>
 
 <h1 class="title">Placemark Report</h1>
 
-<table class="table is-fullwidth">
-	<thead>
-		<tr>
-			<th>Name</th>
-			<th>Description</th>
-			<th>Category</th>
-			<th>Rating</th>
-			<th>Latitude</th>
-			<th>Longitude</th>
-		</tr>
-	</thead>
+{#each data.placemarks as placemark}
+	<div class="box">
+		<h2 class="title is-4">{placemark.name}</h2>
 
-	<tbody>
-		{#each placemarks as placemark}
-			<tr>
-				<td>{placemark.name}</td>
-				<td>{placemark.description}</td>
-				<td>{placemark.category}</td>
-				<td>{placemark.rating}</td>
-				<td>{placemark.lat}</td>
-				<td>{placemark.lng}</td>
-			</tr>
-		{/each}
-	</tbody>
-</table>
+		<p>{placemark.description}</p>
+		<p><strong>Category:</strong> {placemark.category}</p>
+		<p><strong>Rating:</strong> {placemark.rating}</p>
+		<p><strong>Lat:</strong> {placemark.lat}</p>
+		<p><strong>Lng:</strong> {placemark.lng}</p>
+
+		{#if placemark.images && placemark.images.length > 0}
+			<div class="columns is-multiline mt-3">
+				{#each placemark.images as image, index}
+					<div class="column is-one-quarter">
+						<img
+							src={image.url}
+							alt={placemark.name}
+							style="width: 100%; height: 150px; object-fit: cover;"
+						/>
+
+						<form method="POST" action="/Report?/deleteImage">
+							<input type="hidden" name="placemarkId" value={placemark._id} />
+							<input type="hidden" name="imageIndex" value={index} />
+							<button type="submit" class="button is-danger is-small mt-2"> Delete image </button>
+						</form>
+					</div>
+				{/each}
+			</div>
+		{:else}
+			<p>No uploaded images</p>
+		{/if}
+	</div>
+{/each}
