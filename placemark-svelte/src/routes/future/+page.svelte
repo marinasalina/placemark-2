@@ -16,15 +16,23 @@
 	const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
 	const topTrend = sorted[0];
 
-	const totalPlacemarks = placemarks.length;
-	const projectedNextGoal = totalPlacemarks + 5;
+	const visitedPlaces = placemarks.length;
 
-	let futurePlaces = [
+	let newPlace = $state('');
+
+	let futurePlaces = $state([
 		'Paris - Louvre Museum',
 		'Rome - Vatican Museums',
 		'Athens - Acropolis',
 		'Barcelona - Sagrada Familia'
-	];
+	]);
+
+	function addFuturePlace() {
+		if (newPlace.trim()) {
+			futurePlaces.push(newPlace.trim());
+			newPlace = '';
+		}
+	}
 </script>
 
 <h1 class="title">Analytics: Trends & Projections</h1>
@@ -39,9 +47,7 @@
 			({topTrend[1]} placemarks)
 		</p>
 
-		<p>
-			This suggests a strong interest in {topTrend[0]} destinations.
-		</p>
+		<p>This suggests a strong interest in {topTrend[0]} destinations.</p>
 	{:else}
 		<p>No placemark data yet.</p>
 	{/if}
@@ -72,9 +78,24 @@
 <div class="box">
 	<h2 class="title is-4">Future Travel Wishlist</h2>
 
+	<div class="field has-addons">
+		<div class="control is-expanded">
+			<input
+				class="input"
+				type="text"
+				placeholder="Add destination, e.g. London - Tower Bridge"
+				bind:value={newPlace}
+			/>
+		</div>
+
+		<div class="control">
+			<button class="button is-link" type="button" on:click={addFuturePlace}>Add</button>
+		</div>
+	</div>
+
 	<ul>
 		{#each futurePlaces as place}
-			<li>{place}</li>
+			<li>✈️ {place}</li>
 		{/each}
 	</ul>
 </div>
@@ -82,14 +103,11 @@
 <div class="box">
 	<h2 class="title is-4">Projection</h2>
 
-	<p>
-		You currently have <strong>{totalPlacemarks}</strong> saved placemarks. A simple future goal is
-		to reach <strong>{projectedNextGoal}</strong> placemarks.
-	</p>
+	<p>You have saved <strong>{visitedPlaces}</strong> placemarks so far.</p>
 
 	{#if topTrend}
 		<p>
-			Based on your current trend, your future travel plans may focus more on
+			Based on your current saved placemarks, your future travel plans may focus more on
 			<strong>{topTrend[0]}</strong> destinations.
 		</p>
 	{/if}
