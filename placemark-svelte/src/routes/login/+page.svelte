@@ -1,20 +1,56 @@
 <script lang="ts">
 	import LoginForm from './LoginForm.svelte';
-	import { signIn } from '@auth/sveltekit/client';
 	import { goto } from '$app/navigation';
 	import { resolve } from '$app/paths';
+	import { auth } from '$lib/firebase';
 	import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 
-	let { data, form } = $props();
+	let { form } = $props();
 
 	async function googleLogin() {
-		await signInWithPopup(auth, new GoogleAuthProvider());
+		const result = await signInWithPopup(auth, new GoogleAuthProvider());
+
+		await fetch('/firebase-login', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({
+				uid: result.user.uid,
+				email: result.user.email
+			})
+		});
+
 		goto(resolve('/PlaceMark'));
 	}
 
 	async function githubLogin() {
-		await signInWithPopup(auth, new GithubAuthProvider());
-		goto(resolve('/PlaceMark'));
+		try {
+			const provider = new GithubAuthProvider();
+			provider.addScope('user:email');
+
+			const result = await signInWithPopup(auth, provider);
+
+			await fetch('/firebase-login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					uid: result.user.uid,
+					email: result.user.email ?? 'github-user'
+				})
+			});
+
+			goto(resolve('/PlaceMark'));
+		} catch (error: any) {
+			if (error.code === 'auth/account-exists-with-different-credential') {
+				alert(
+					'This email already exists with Google. Sign in with Google first, then GitHub can be linked.'
+				);
+			} else {
+				console.error(error);
+				alert(String(error));
+			}
+		}
 	}
 </script>
 

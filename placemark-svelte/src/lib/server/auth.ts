@@ -66,3 +66,6 @@ export function resolveUserId(
 ): string {
 	return getUserIdFromToken(token) || authSession?.user?.email || '';
 }
+export function createToken(id: string) {
+	return jwt.sign({ id }, JWT_SECRET);
+}
