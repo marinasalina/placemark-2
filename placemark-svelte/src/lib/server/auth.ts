@@ -48,3 +48,21 @@ export async function authenticateUser(email: string, password: string) {
 		token
 	};
 }
+
+export function getUserIdFromToken(token: string | undefined): string | null {
+	if (!token) return null;
+
+	try {
+		const payload = jwt.verify(token, JWT_SECRET) as { id: string };
+		return payload.id?.toString() ?? null;
+	} catch {
+		return null;
+	}
+}
+
+export function resolveUserId(
+	token: string | undefined,
+	authSession: { user?: { email?: string | null } } | null
+): string {
+	return getUserIdFromToken(token) || authSession?.user?.email || '';
+}

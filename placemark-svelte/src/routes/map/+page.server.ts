@@ -2,6 +2,7 @@ import { redirect } from '@sveltejs/kit';
 import { dbConnect } from '$lib/server/db';
 import { placemarkStore } from '$lib/server/models/placemark-store';
 import { OPENWEATHER_API_KEY } from '$env/static/private';
+import { resolveUserId } from '$lib/server/auth';
 
 async function getWeather(lat: number, lng: number) {
 	const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${OPENWEATHER_API_KEY}&units=metric`;
@@ -31,7 +32,7 @@ export async function load({ cookies, locals }) {
 		throw redirect(303, '/login');
 	}
 
-	const userId = token || authSession?.user?.email || '';
+	const userId = resolveUserId(token, authSession);
 
 	const placemarks = await placemarkStore.findByUser(userId);
 

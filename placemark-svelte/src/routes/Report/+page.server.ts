@@ -2,6 +2,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { dbConnect } from '$lib/server/db';
 import { placemarkStore } from '$lib/server/models/placemark-store';
 import { imageStore } from '$lib/server/models/image-store';
+import { resolveUserId } from '$lib/server/auth';
 
 export async function load({ cookies, locals }) {
 	await dbConnect();
@@ -13,7 +14,10 @@ export async function load({ cookies, locals }) {
 		throw redirect(303, '/login');
 	}
 
-	const userId = token || authSession?.user?.email || '';
+	const userId = resolveUserId(token, authSession);
+	console.log('userId', userId);
+	const placemarskStore = await placemarkStore.findByUser(userId);
+	console.log('placemarskStore', placemarskStore);
 
 	return {
 		placemarks: await placemarkStore.findByUser(userId)

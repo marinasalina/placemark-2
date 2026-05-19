@@ -2,6 +2,7 @@
 	import { subTitle } from '$lib/services/runes.svelte';
 
 	let { data, form } = $props();
+	console.log('Report page data:', data);
 
 	subTitle.text = 'Placemark Report';
 </script>

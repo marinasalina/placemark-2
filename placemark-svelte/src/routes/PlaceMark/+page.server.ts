@@ -2,6 +2,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import { dbConnect } from '$lib/server/db';
 import { placemarkStore } from '$lib/server/models/placemark-store';
 import { imageStore } from '$lib/server/models/image-store';
+import { resolveUserId } from '$lib/server/auth.js';
 
 export async function load({ cookies, locals }) {
 	await dbConnect();
@@ -39,7 +40,8 @@ export const actions = {
 				images.push(uploadedImage);
 			}
 		}
-		const userId = token || authSession?.user?.email || '';
+		const userId = resolveUserId(token, authSession);
+		console.log('Hello', userId);
 		const placemark = {
 			name: String(form.get('name') || ''),
 			description: String(form.get('description') || ''),
