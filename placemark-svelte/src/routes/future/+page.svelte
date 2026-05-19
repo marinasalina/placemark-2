@@ -20,12 +20,7 @@
 
 	let newPlace = $state('');
 
-	let futurePlaces = $state([
-		'Paris - Louvre Museum',
-		'Rome - Vatican Museums',
-		'Athens - Acropolis',
-		'Barcelona - Sagrada Familia'
-	]);
+	let futurePlaces = $state([]);
 
 	function addFuturePlace() {
 		if (newPlace.trim()) {

@@ -2,9 +2,10 @@
 	import Card from '$lib/ui/Card.svelte';
 	import LeafletMap from '$lib/ui/leafletMap.svelte';
 	import type { Placemark } from '$lib/types/placemark-types';
+	import { subTitle } from '$lib/services/runes.svelte';
 
 	let { data } = $props();
-
+	subTitle.text = 'Map';
 	let placemarks = $derived<Placemark[]>(data.placemarks || []);
 
 	const categories = $derived(

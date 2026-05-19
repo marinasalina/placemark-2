@@ -2,7 +2,7 @@ import { json } from '@sveltejs/kit';
 import { createToken } from '$lib/server/auth';
 
 export async function POST({ request, cookies }) {
-	const { uid, email } = await request.json();
+	const { uid, email, name } = await request.json();
 
 	const token = createToken(uid);
 
@@ -13,7 +13,7 @@ export async function POST({ request, cookies }) {
 		secure: false
 	});
 
-	cookies.set('name', email ?? 'Firebase User', {
+	cookies.set('name', name ?? email ?? 'User', {
 		path: '/',
 		httpOnly: false,
 		sameSite: 'strict',

@@ -15,7 +15,8 @@
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
 				uid: result.user.uid,
-				email: result.user.email
+				email: result.user.email,
+				name: result.user.displayName
 			})
 		});
 
@@ -36,7 +37,8 @@
 				},
 				body: JSON.stringify({
 					uid: result.user.uid,
-					email: result.user.email ?? 'github-user'
+					email: result.user.email ?? 'github-user',
+					name: result.user.displayName
 				})
 			});
 
