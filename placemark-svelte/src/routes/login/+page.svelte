@@ -2,12 +2,13 @@
 	import LoginForm from './LoginForm.svelte';
 	import { signIn } from '@auth/sveltekit/client';
 	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 
 	let { data, form } = $props();
 
 	$effect(() => {
 		if (data.session) {
-			goto('/PlaceMark');
+			goto(resolve('/PlaceMark'));
 		}
 	});
 </script>
@@ -23,15 +24,16 @@
 				<div class="has-text-centered mt-5">
 					<p class="mb-3">Or sign in with</p>
 
-					<button class="button is-danger is-fullwidth mb-3" on:click={() => signIn('google')}>
-						Login with Google
-					</button>
+						<button class="button is-danger is-fullwidth mb-3" onclick={() => signIn('google')}>
+							Login with Google
+						</button>
 
-					<button class="button is-dark is-fullwidth" on:click={() => signIn('github')}>
+						<button class="button is-dark is-fullwidth" onclick={() => signIn('github')}>
 						Login with GitHub
 					</button>
 				</div>
 			</div>
+			<a class="button is-link is-light is-fullwidth mt-3" href={resolve("/signup")}> Back to Sign Up </a>
 		</div>
 	</div>
 </section>
