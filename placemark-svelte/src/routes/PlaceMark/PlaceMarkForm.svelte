@@ -59,7 +59,7 @@
 
 	<div class="field">
 		<label class="label" for="images">Upload images:</label>
-		//Multiple file upload input, accepts only images
+		<!-- Multiple file upload input, accepts only images -->
 		<input id="images" class="input" type="file" name="images" multiple accept="image/*" />
 	</div>
 

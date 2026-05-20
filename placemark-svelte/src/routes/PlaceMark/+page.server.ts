@@ -20,8 +20,7 @@ export async function load({ cookies, locals }) {
 export const actions = {
 	default: async ({ request, cookies, locals }) => {
 		await dbConnect();
-
-		const authSession = await locals.auth();
+		const authSession = null;
 		const token = cookies.get('token');
 
 		if (!authSession && !token) {
@@ -40,7 +39,7 @@ export const actions = {
 				images.push(uploadedImage);
 			}
 		}
-		const userId = resolveUserId(token, authSession);
+		const userId = resolveUserId(token, null);
 		console.log('Hello', userId);
 		const placemark = {
 			name: String(form.get('name') || ''),
