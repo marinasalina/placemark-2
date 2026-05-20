@@ -1,3 +1,4 @@
+//MongoDB connection setup using Mongoose. This file exports a function to connect to the database, which can be reused across the application to ensure a single connection is maintained.
 import mongoose from 'mongoose';
 import { MONGO_URL } from '$env/static/private';
 

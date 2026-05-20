@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+//Blueprint for user Data in Mongo db
 const userSchema = new mongoose.Schema({
 	firstName: String,
 	lastName: String,

@@ -1,8 +1,9 @@
 import { User } from '$lib/server/models/user';
 import { dbConnect } from '$lib/server/db';
 import type { User as UserType } from '$lib/types/placemark-types';
-
+//Creates reusable object with the DB functions
 export const userStore = {
+	//create new user in DB
 	async add(user: UserType) {
 		await dbConnect();
 

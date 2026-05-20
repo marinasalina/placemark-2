@@ -1,4 +1,6 @@
 <script lang="ts">
+//lat and lng input components
+//bindable - allows parent component to bind values to these properties
 	let { lat = $bindable(0.0), lng = $bindable(0.0) } = $props();
 </script>
 

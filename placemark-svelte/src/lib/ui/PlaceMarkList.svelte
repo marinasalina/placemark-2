@@ -1,24 +1,5 @@
 <script lang="ts">
-	let {
-		placemarks = [
-			{
-				name: 'Dublin',
-				description: 'Capital city',
-				category: 'City',
-				rating: 'recommend',
-				lat: 52.16129,
-				lng: -7.5154
-			},
-			{
-				name: 'Trinity College',
-				description: 'Library',
-				category: 'Library',
-				rating: 'recommend',
-				lat: 52.26129,
-				lng: -7.23154
-			}
-		]
-	} = $props();
+	let { placemarks = [] } = $props();
 </script>
 
 <table class="table is-fullwidth">
@@ -33,9 +14,14 @@
 		</tr>
 	</thead>
 
-	<tbody>
-		{#each placemarks as p}
-			<tr>
+	<tbody
+		>//holds actual data rows
+		{#each placemarks as p}//loops through the placemarks array and renders a table row for each
+			placemark, displaying its properties in the corresponding columns. This allows users to see a
+			list of all placemarks with their details in a tabular format.
+			<tr
+				>//Row for each placemark, displaying its properties in the corresponding columns. This
+				allows users to see a list of all placemarks with their details in a tabular format.
 				<td>{p.name}</td>
 				<td>{p.description}</td>
 				<td>{p.category}</td>

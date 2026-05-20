@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { imageSchema } from './image';
-
+// Blueprint for placemark data in MongoDB
 const placemarkSchema = new mongoose.Schema({
 	name: String,
 	description: String,

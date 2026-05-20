@@ -1,23 +1,26 @@
-<script lang="ts">
+<script lang="ts">//componnet uses TypeScript
+//Receves email, password from parent component
+//bindable - parent and child share value (two way binding)
 	let { email = $bindable(''), password = $bindable('') } = $props();
 </script>
-
+//email field
 <div class="field">
 	<label class="label" for="email">Email</label>
 	<div class="control has-icons-left">
 		<input
 			id="email"
-			bind:value={email}
+			bind:value={email}//two way binding
 			class="input"
 			type="text"
 			placeholder="Email"
-			name="email"
+			name="email"//used in form submission
 		/>
 		<span class="icon is-small is-left">
 			<i class="fa fa-envelope"></i>
 		</span>
 	</div>
 </div>
+//password field
 <div class="field">
 	<label class="label" for="password">Password</label>
 	<div class="control has-icons-left">
