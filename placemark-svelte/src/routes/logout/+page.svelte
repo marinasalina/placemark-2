@@ -1,9 +1,10 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
-	import { signOut } from '@auth/sveltekit/client';
 
-	onMount(() => {
-		signOut({ callbackUrl: '/signup' });
+	onMount(async () => {
+		await fetch('/api/logout', { method: 'POST' });
+		goto('/login');
 	});
 </script>
 
