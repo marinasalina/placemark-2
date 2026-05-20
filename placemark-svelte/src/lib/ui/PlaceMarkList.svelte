@@ -14,14 +14,11 @@
 		</tr>
 	</thead>
 
-	<tbody
-		>//holds actual data rows
-		{#each placemarks as p}//loops through the placemarks array and renders a table row for each
-			placemark, displaying its properties in the corresponding columns. This allows users to see a
-			list of all placemarks with their details in a tabular format.
-			<tr
-				>//Row for each placemark, displaying its properties in the corresponding columns. This
-				allows users to see a list of all placemarks with their details in a tabular format.
+	<tbody>
+		<!-- holds actual data rows -->
+		{#each placemarks as p}
+			<!-- row for each placemark -->
+			<tr>
 				<td>{p.name}</td>
 				<td>{p.description}</td>
 				<td>{p.category}</td>

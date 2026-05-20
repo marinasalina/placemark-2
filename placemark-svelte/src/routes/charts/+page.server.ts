@@ -10,15 +10,15 @@ import { resolveUserId } from '$lib/server/auth';
 export async function load({ cookies, locals }) {
 	//await conects to MongoDB
 	await dbConnect();
-//get auth session and token from cookies
-	const authSession = await locals.auth();
+	//get auth session and token from cookies
+	const authSession = null;
 	const token = cookies.get('token');
 
 	if (!authSession && !token) {
 		//Redirect user to login page if they are not authenticated. This ensures that only logged-in users can access the charts page, which may contain sensitive data related to their placemarks. By checking for both an active authentication session and a valid token, we can effectively protect the charts page from unauthorized access.
 		throw redirect(303, '/login');
 	}
-//Resolve user identity, because Login can come from different methods
+	//Resolve user identity, because Login can come from different methods
 	const userId = resolveUserId(token, authSession);
 
 	//load user placemark

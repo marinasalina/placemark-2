@@ -123,5 +123,5 @@
 	});
 </script>
 
-//empty HTML container where leaflet draw the map
+<!-- empty HTML container where leaflet draw the map -->
 <div bind:this={mapDiv} style={`height:${height}vh;width:100%;`}></div>

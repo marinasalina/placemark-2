@@ -7,7 +7,7 @@ import { resolveUserId } from '$lib/server/auth.js';
 export async function load({ cookies, locals }) {
 	await dbConnect();
 
-	const authSession = await locals.auth();
+	const authSession = null;
 	const token = cookies.get('token');
 
 	if (!authSession && !token) {
@@ -29,7 +29,7 @@ export const actions = {
 		}
 
 		const form = await request.formData();
-//Retrieves all files associated with the 'images' field in the form and casts them to an array of File objects. This allows us to work with the uploaded files in the server-side code.	
+		//Retrieves all files associated with the 'images' field in the form and casts them to an array of File objects. This allows us to work with the uploaded files in the server-side code.
 		const files = form.getAll('images') as File[];
 
 		const images = [];

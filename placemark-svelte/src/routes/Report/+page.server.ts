@@ -7,7 +7,7 @@ import { resolveUserId } from '$lib/server/auth';
 export async function load({ cookies, locals }) {
 	await dbConnect();
 
-	const authSession = await locals.auth();
+	const authSession = null;
 	const token = cookies.get('token');
 
 	if (!authSession && !token) {

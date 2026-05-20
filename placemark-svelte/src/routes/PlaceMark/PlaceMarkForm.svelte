@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Coordinates from '$lib/ui/Coordinates.svelte';
-//Parents components can bind values to these properties, allowing them to control the state of the form inputs from outside the component.
-//state create reactive variable, UI updates when value changes	
-let PlaceMarkName = $state('');
+	//Parents components can bind values to these properties, allowing them to control the state of the form inputs from outside the component.
+	//state create reactive variable, UI updates when value changes
+	let PlaceMarkName = $state('');
 	let PlaceMarkDescription = $state('');
 	let selectedCategory = $state('City');
 	let selectedMethod = $state('recommend');
@@ -51,7 +51,7 @@ let PlaceMarkName = $state('');
 			<option>Bridge</option>
 		</select>
 	</div>
-//Child components - Connects to parent variables
+	<!-- Child components - Connects to parent variables -->
 	<Coordinates bind:lat bind:lng />
 
 	<input type="hidden" name="lat" value={lat} />
